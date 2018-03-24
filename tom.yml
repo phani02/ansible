@@ -2,17 +2,17 @@
 - hosts: appservers
   become: yes
   tasks:
-- name:  updating packages
-  apt: 
-    update_cache: yes
-- name: insatlling tomcat    
-  apt:
-    name: tomcat7
-    state: present
-- name: stopping tomcat
-  service:
-    name: tomcat7
-    state: stopped    
+    - name:  updating packages
+      apt: 
+        update_cache: yes
+    - name: insatlling tomcat    
+      apt:
+        name: tomcat7
+        state: present
+    - name: stopping tomcat
+      service:
+        name: tomcat7
+        state: stopped    
 
 
 
