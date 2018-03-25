@@ -7,9 +7,9 @@
         update_cache: yes
     - name: inastalling nginix
       apt:
-        name: nginix   
+        name: nginx   
         state: present
     - name: restarting nginix
       apt: 
-        name: nginix
+        name: nginx
         state: start
