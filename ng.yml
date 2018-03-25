@@ -1,0 +1,16 @@
+---
+- hosts: ip
+  become: yes
+  tasks: 
+    -name: updating packages
+     apt:
+       update_cache: yes
+    -name: inastalling nginix
+     apt:
+       name: nginix   
+       state: present
+    -name: restarting nginix
+     apt: 
+       name: nginix
+       state: start
+          
