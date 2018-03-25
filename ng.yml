@@ -12,4 +12,4 @@
     - name: restarting nginix
       apt: 
         name: nginx
-        state: start
+        state: present
