@@ -1,5 +1,5 @@
 ---
-- hosts: appservers
+- hosts: webservers
   become: yes
   tasks:
     - name:  updating packages
@@ -9,11 +9,16 @@
       apt:
         name: tomcat7
         state: present
-    - name: stopping tomcat
-      service:
-        name: tomcat7
-        state: stopped    
-
+    - name: downloading jenkins warfile
+      get_url:
+        dest: /var/www/tomcat7/webapps/jenkins.war
+        url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+      notify: 
+       -restart tomcat7
+    handlers:
+      name: restart tomcat7
+      service: tomcat7
+      state: restarted     
 
 
 
