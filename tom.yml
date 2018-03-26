@@ -2,22 +2,24 @@
 - hosts: webservers
   become: yes
   tasks:
-    - name:  updating packages
-      apt: 
-        update_cache: yes
-    - name: insatlling tomcat    
-      apt:
-        name: tomcat7
-        state: present
-    - name: downloading jenkins warfile
-      get_url:
-        dest: /var/www/tomcat7/webapps/jenkins.war
-        url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
-      notify: 
-       -restart tomcat7
-    handlers:
-      name: restart tomcat7
-      service: tomcat7
+  - name: updating packages
+    apt: 
+      update_cache: yes
+  - name: installing tomcat    
+    apt:
+      name: tomcat7
+      state: present
+  - name: downloading jenkins warfile
+    get_url:
+      dest: /var/lib/tomcat7/webapps/jenkins.war
+      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+    notify: 
+      - restart tomcat7
+
+  handlers:
+  - name: restart tomcat7
+    service: 
+      name: tomcat7
       state: restarted     
 
 
