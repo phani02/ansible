@@ -16,17 +16,17 @@
 
   - name: installing apache in redhat
     yum:
-     name: httpd
-     state: present
-     when: ansible_os_family == "Redhat"   
+      name: httpd
+      state: present
+      when: ansible_os_family == "Redhat"   
     notify: 
     - restart httpd
 
   - name: installing apache2 in debian
     apt:
-     name: apache2
-     state: present
-     when: ansible_os_family == "Debian"
+      name: apache2
+      state: present
+      when: ansible_os_family == "Debian"
     notify: 
     - restart apache2
 
@@ -35,16 +35,16 @@
      content: "hai frnds how are you welcome to the new page"
      dest: /var/www/html/index.html
 
-handlers:
-- name: restart httpd
-    service:
-     name: httpd
-     state: restarted
+  handlers:
+    - name: restart httpd
+      service:
+        name: httpd
+        state: restarted
 
-handlers:
-- name: restart apache2
-    service:
-     name: apache2
-     state: restarted
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
 
 
