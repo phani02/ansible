@@ -1,5 +1,5 @@
 ---
-- hosts: centos
+- hosts: webservers 
   become: yes
   tasks:
 
@@ -7,18 +7,44 @@
     yum:
       name: '*'
       state: latest 
-      
-  - name: installing apache2
+      when: ansible_os_family == "Redhat"
+
+  - name: updating packages in debian
+    apt:
+      update_cache: yes
+      when: ansible_os_family == "Debian"
+
+  - name: installing apache in redhat
     yum:
      name: httpd
      state: present
+     when: ansible_os_family == "Redhat"   
+    notify: 
+    - restart httpd
+
+  - name: installing apache2 in debian
+    apt:
+     name: apache2
+     state: present
+     when: ansible_os_family == "Debian"
+    notify: 
+    - restart apache2
 
   - name: setting homepage
     copy:
      content: "hai frnds how are you welcome to the new page"
      dest: /var/www/html/index.html
-  - name: restarting service
+
+handlers:
+- name: restart httpd
     service:
      name: httpd
-     state: restarted  
+     state: restarted
+
+handlers:
+- name: restart apache2
+    service:
+     name: apache2
+     state: restarted
+
 
