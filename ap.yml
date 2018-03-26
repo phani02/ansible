@@ -1,0 +1,20 @@
+---
+- host: centos
+  become: yes
+  tasks:
+  - name: updating the packages
+    yum:
+      update_cache:yes
+  - name: installing apache2
+    yum:
+     name:httpd
+     state:present
+  - name: setting homepage
+    copy:
+    content: "hai frnds how are you welcome to the new page"
+    dest: /var/www/html/index.html
+  - name: restarting service
+    yum:
+     name: httpd
+     state: restarted  
+
