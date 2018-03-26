@@ -2,19 +2,23 @@
 - hosts: centos
   become: yes
   tasks:
+
   - name: updating the packages
     yum:
-      update_cache:yes
+      name: '*'
+      state: latest 
+      
   - name: installing apache2
     yum:
-     name:httpd
-     state:present
+     name: httpd
+     state: present
+
   - name: setting homepage
     copy:
-    content: "hai frnds how are you welcome to the new page"
-    dest: /var/www/html/index.html
+     content: "hai frnds how are you welcome to the new page"
+     dest: /var/www/html/index.html
   - name: restarting service
-    yum:
+    service:
      name: httpd
      state: restarted  
 
