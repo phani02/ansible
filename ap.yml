@@ -7,44 +7,44 @@
     yum:
       name: '*'
       state: latest 
-      when: ansible_os_family == "Redhat"
+    when: ansible_os_family == "Redhat"
 
   - name: updating packages in debian
     apt:
       update_cache: yes
-      when: ansible_os_family == "Debian"
+    when: ansible_os_family == "Debian"
 
   - name: installing apache in redhat
     yum:
       name: httpd
       state: present
-      when: ansible_os_family == "Redhat"   
     notify: 
-    - restart httpd
+    - Restart Httpd
+    when: ansible_os_family == "Redhat"
 
   - name: installing apache2 in debian
     apt:
       name: apache2
       state: present
-      when: ansible_os_family == "Debian"
     notify: 
-    - restart apache2
+    - Restart apache
+    when: ansible_os_family == "Debian"
 
   - name: setting homepage
     copy:
      content: "hai frnds how are you welcome to the new page"
      dest: /var/www/html/index.html
+   
+  handlers:
+  - name: Restart Httpd
+    service:
+      name: httpd
+      state: restarted
 
   handlers:
-    - name: restart httpd
-      service:
-        name: httpd
-        state: restarted
-
-  handlers:
-    - name: restart apache2
-      service:
-        name: apache2
-        state: restarted
+  - name: Restart apache
+    service:
+      name: apache2
+      state: restarted
 
 
