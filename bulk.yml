@@ -1,0 +1,16 @@
+---
+- host: webservers
+  become: yes
+  tasks:
+  - name: updating packages
+    apt: 
+      update_cache: yes
+  - name: installing multiple items
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - git
+    - nano
+    - tree  
+    when: ansible_os_family == "Debian"
