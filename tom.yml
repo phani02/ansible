@@ -2,7 +2,13 @@
 - hosts: ubuntu
   vars: 
     package: tomcat7
-    state: present  
+    state: present
+    maxmem: 512m
+    maxpermsize: 256m
+    multi packages:
+      - tomcat7-docs
+      - tomcat7-admin
+      - tomcat7-examples
   become: yes
   tasks:
   - name: updating packages
@@ -12,12 +18,17 @@
     apt:
       name: "{{ package }}"
       state: "{{ state }}"
-#  - name: downloading jenkins warfile
-#   get_url:
-#    dest: /var/lib/tomcat7/webapps/jenkins.war
-#      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+  - name: change default settings
+    template:
+      src: tomcat7.j2
+      dest: /etc/default/tomcat7
     notify: 
       - restart tomcat7
+  - name: installing multiple packages
+      apt: 
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ multi packages }}
 
   handlers:
   - name: restart tomcat7
