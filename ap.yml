@@ -7,7 +7,7 @@
     yum:
       name: '*'
       state: latest 
-    when: ansible_os_family == "Redhat"
+    when: ansible_os_family == "RedHat"
 
   - name: updating packages in debian
     apt:
@@ -16,35 +16,38 @@
 
   - name: installing apache in redhat
     yum:
-      name: httpd
+      name: "{{ package_name }}"
       state: present
     notify: 
     - Restart Httpd
-    when: ansible_os_family == "Redhat"
+    when: ansible_os_family == "RedHat"
 
   - name: installing apache2 in debian
     apt:
-      name: apache2
+      name: "{{ package_name }}"
       state: present
     notify: 
     - Restart apache
     when: ansible_os_family == "Debian"
+  - name: backup homepage
+    command: cp -n {{ homepage }} {{ backup }}
 
   - name: setting homepage
     copy:
      content: "hai frnds how are you welcome to the new page"
-     dest: /var/www/html/index.html
-   
-  handlers:
-  - name: Restart Httpd
-    service:
-      name: httpd
-      state: restarted
+     dest: "{{ homepage }}"
+
 
   handlers:
   - name: Restart apache
     service:
-      name: apache2
+      name: "{{ package_name }}"
       state: restarted
 
+
+  handlers:
+  - name: Restart httpd
+    service:
+      name: "{{ package_name }}"
+      state: restarted
 

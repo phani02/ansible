@@ -1,5 +1,8 @@
 ---
-- hosts: webservers
+- hosts: ubuntu
+  vars: 
+    package: tomcat7
+    state: present  
   become: yes
   tasks:
   - name: updating packages
@@ -7,20 +10,21 @@
       update_cache: yes
   - name: installing tomcat    
     apt:
-      name: tomcat7
-      state: present
-  - name: downloading jenkins warfile
-    get_url:
-      dest: /var/lib/tomcat7/webapps/jenkins.war
-      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+      name: "{{ package }}"
+      state: "{{ state }}"
+#  - name: downloading jenkins warfile
+#   get_url:
+#    dest: /var/lib/tomcat7/webapps/jenkins.war
+#      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
     notify: 
       - restart tomcat7
 
   handlers:
   - name: restart tomcat7
     service: 
-      name: tomcat7
-      state: restarted     
+      name: "{{ package }}"
+      state: restarted
+    when: state == "present"     
 
 
 
