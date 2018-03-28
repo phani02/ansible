@@ -9,10 +9,13 @@
       - tomcat7-docs
       - tomcat7-admin
       - tomcat7-examples
+    tomcatuser: tom
+    usrpasswd: tom
+    role: role  
   become: yes
   tasks:
   - name: updating packages
-    apt: 
+    apt:
       update_cache: yes
   - name: installing tomcat    
     apt:
@@ -24,6 +27,14 @@
       dest: /etc/default/tomcat7
     notify: 
       - restart tomcat7
+
+  - name: change default settings
+    template:
+      src: tomcat.user.xml.j2
+      dest: /etc/default/tomcat.user.xml
+    notify: 
+      - restart tomcat7
+
   - name: installing multiple packages
       apt: 
         name: "{{ item }}"
