@@ -5,7 +5,7 @@
     state: present
     maxmem: 512m
     maxpermsize: 256m
-    multi packages:
+    multi_packages:
       - tomcat7-docs
       - tomcat7-admin
       - tomcat7-examples
@@ -36,10 +36,10 @@
       - restart tomcat7
 
   - name: installing multiple packages
-      apt: 
-        name: "{{ item }}"
-        state: present
-      with_items: "{{ multi packages }}
+    apt: 
+      name: "{{ item }}"
+      state: present
+    with_items: "{{ multi_packages }}"
 
   handlers:
   - name: restart tomcat7
