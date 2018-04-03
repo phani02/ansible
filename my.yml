@@ -1,6 +1,0 @@
----
-  - hosts: ip
-    gather_facts: no
-    tasks: 
-    - name: ping machines
-      ping:
